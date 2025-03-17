@@ -16,6 +16,7 @@ import { Menu, Bell, MessageSquare, User, Settings, Languages, HelpCircle, LogOu
 
 interface TopNavProps {
   onMenuClick: () => void;
+  className?: string;
 }
 
 export function TopNav({ onMenuClick }: TopNavProps) {
