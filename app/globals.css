@@ -44,6 +44,7 @@
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
@@ -76,7 +77,42 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
+    /* Smooth scrolling */
+    scroll-behavior: smooth;
+  }
+
+  /* Responsive Typography */
+  h1 {
+    @apply text-3xl sm:text-4xl lg:text-5xl font-bold;
+  }
+  h2 {
+    @apply text-2xl sm:text-3xl lg:text-4xl font-semibold;
+  }
+  h3 {
+    @apply text-xl sm:text-2xl lg:text-3xl font-medium;
+  }
+  p {
+    @apply text-base sm:text-lg lg:text-xl;
+  }
+
+  /* Touch-Friendly Buttons */
+  button,
+  .btn {
+    @apply p-2 sm:p-3 lg:p-4 rounded-md;
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  /* Responsive Padding and Margins */
+  .container {
+    @apply px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 mx-auto max-w-screen-xl;
+  }
+
+  /* Hide Non-Essential Elements on Mobile */
+  .hidden-mobile {
+    @apply hidden sm:block;
   }
 }

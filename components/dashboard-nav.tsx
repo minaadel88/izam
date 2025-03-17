@@ -92,7 +92,7 @@ function SortableItem({ item, isEditMode, onVisibilityToggle, onLabelChange }: S
           <span className="text-gray-400">⋮⋮</span>
         </div>
       )}
-      
+
       {isEditing ? (
         <div className="flex-1 flex gap-2">
           <Input
@@ -112,13 +112,13 @@ function SortableItem({ item, isEditMode, onVisibilityToggle, onLabelChange }: S
 
       {isEditMode && !isEditing && (
         <div className="flex gap-2">
-          <button 
+          <button
             onClick={() => setIsEditing(true)}
             className="text-gray-400 hover:text-gray-600"
           >
             <span>✎</span>
           </button>
-          <button 
+          <button
             onClick={() => onVisibilityToggle(item.id)}
             className="text-gray-400 hover:text-gray-600"
           >
@@ -161,14 +161,14 @@ export function DashboardNav({ isOpen, setIsOpen, isEditMode, setIsEditMode }: D
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
-    
+
     if (over && active.id !== over.id) {
       const oldIndex = navItems.findIndex((item) => item.id === active.id);
       const newIndex = navItems.findIndex((item) => item.id === over.id);
-      
+
       const newItems = arrayMove(navItems, oldIndex, newIndex);
       setNavItems(newItems);
-      
+
       await trackNavChange({
         id: active.id as string,
         from: oldIndex,
@@ -222,7 +222,7 @@ export function DashboardNav({ isOpen, setIsOpen, isEditMode, setIsEditMode }: D
       {/* Sidebar */}
       <div
         className={cn(
-          "fixed lg:static inset-y-0 right-0 z-50 w-64 bg-white transform transition-transform duration-300 ease-in-out lg:transform-none shadow-lg",
+          "fixed lg:static inset-y-0 right-0 z-50 w-full max-w-xs bg-white transform transition-transform duration-300 ease-in-out shadow-lg",
           isOpen ? "translate-x-0" : "translate-x-full lg:translate-x-0"
         )}
       >
@@ -231,17 +231,17 @@ export function DashboardNav({ isOpen, setIsOpen, isEditMode, setIsEditMode }: D
           <div className="flex gap-2">
             {isEditMode ? (
               <>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={handleCancel}
                   className="text-red-500 hover:text-red-600"
                 >
                   ✕
                 </Button>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={handleSave}
                   className="text-green-500 hover:text-green-600"
                 >
@@ -249,9 +249,9 @@ export function DashboardNav({ isOpen, setIsOpen, isEditMode, setIsEditMode }: D
                 </Button>
               </>
             ) : (
-              <Button 
-                variant="ghost" 
-                size="icon" 
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => setIsEditMode(true)}
                 className="text-gray-500 hover:text-gray-600"
               >
@@ -286,6 +286,18 @@ export function DashboardNav({ isOpen, setIsOpen, isEditMode, setIsEditMode }: D
           </div>
         </ScrollArea>
       </div>
+
+      {/* Mobile Menu Button */}
+      <div className="absolute top-60 right-4">
+    <Button
+      variant="outline"
+      size="icon"
+      onClick={() => setIsOpen(!isOpen)}
+      className="bg-white text-gray-500 hover:text-gray-600 shadow-md"
+    >
+      ☰
+    </Button>
+</div>
     </>
   );
 }

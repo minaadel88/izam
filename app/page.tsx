@@ -15,7 +15,7 @@ export default function Home() {
       <div className="flex flex-col min-h-screen">
         {/* TopNav spanning the full width of the screen */}
         <TopNav
-          onMenuClick={() => setIsSidebarOpen(true)}
+          onMenuClick={() => setIsSidebarOpen(true)} // Open sidebar on menu click
           className="sticky top-0 z-50 w-full bg-background shadow-md"
         />
 
@@ -35,6 +35,14 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* Overlay for mobile */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)} // Close sidebar when clicking outside
+        />
+      )}
     </div>
   );
 }

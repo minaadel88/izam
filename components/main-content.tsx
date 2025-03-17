@@ -93,6 +93,7 @@ const jobs = [
 export function MainContent() {
   const [sorting, setSorting] = useState("top-match");
   const [currentPage, setCurrentPage] = useState(2);
+  const [isSortingOpen, setIsSortingOpen] = useState(false); // For mobile sorting toggle
   const totalPages = 3;
 
   return (
@@ -123,10 +124,25 @@ export function MainContent() {
           <Switch id="alert" className="data-[state=checked]:bg-white" />
         </div>
       </div>
-{/* Sorting and Filters */}
-<div className="flex justify-end mb-4">
-        <Select value={sorting} onValueChange={setSorting}>
-          <SelectTrigger className="w-[180px]">
+
+      {/* Sorting and Filters */}
+      <div className="flex justify-end mb-4 px-4">
+        {/* Sorting Toggle for Mobile */}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setIsSortingOpen(!isSortingOpen)}
+          className="md:hidden w-full text-left"
+        >
+          Sort by: {sorting === "top-match" ? "Top match" : sorting}
+        </Button>
+
+        {/* Sorting Dropdown for Desktop */}
+        <Select
+          value={sorting}
+          onValueChange={setSorting}
+        >
+          <SelectTrigger className="w-[180px] hidden md:block">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -136,11 +152,35 @@ export function MainContent() {
             <SelectItem value="salary-low">Lowest Salary</SelectItem>
           </SelectContent>
         </Select>
+
+        {/* Sorting Dropdown for Mobile */}
+        {isSortingOpen && (
+          <div className="md:hidden absolute top-20 right-4 z-10 bg-white rounded-md shadow-md p-2">
+            <Select
+              value={sorting}
+              onValueChange={(value) => {
+                setSorting(value);
+                setIsSortingOpen(false);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="top-match">Top match</SelectItem>
+                <SelectItem value="newest">Newest</SelectItem>
+                <SelectItem value="salary-high">Highest Salary</SelectItem>
+                <SelectItem value="salary-low">Lowest Salary</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        )}
       </div>
+
       {/* Job Listings */}
       <div className="flex-1 space-y-4 p-4">
         {jobs.map((job) => (
-          <div key={job.id} className="bg-white rounded-lg p-4 shadow-sm">
+          <Card key={job.id} className="p-4 shadow-sm">
             <div className="flex justify-between items-start">
               <div className="flex gap-3">
                 <Image
@@ -177,10 +217,8 @@ export function MainContent() {
               </Badge>
             </div>
 
-            <div className="mt-3 text-sm text-gray-500">
-              {job.category}
-            </div>
-          </div>
+            <div className="mt-3 text-sm text-gray-500">{job.category}</div>
+          </Card>
         ))}
       </div>
 
@@ -192,14 +230,14 @@ export function MainContent() {
           onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
           className="h-8 w-8"
         >
-          &lt;
+          {"<"}
         </Button>
         {[1, 2, 3].map((page) => (
           <Button
             key={page}
             variant={currentPage === page ? "default" : "outline"}
             className={`h-8 w-8 ${
-              currentPage === page ? "bg-green-600" : ""
+              currentPage === page ? "bg-green-600 text-white" : ""
             }`}
             onClick={() => setCurrentPage(page)}
           >
@@ -212,7 +250,7 @@ export function MainContent() {
           onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
           className="h-8 w-8"
         >
-          &gt;
+          {">"}
         </Button>
       </div>
     </div>
