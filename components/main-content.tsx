@@ -13,6 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
+import { Heart } from "lucide-react";
 
 const jobs = [
   {
@@ -41,11 +42,11 @@ const jobs = [
   },
   {
     id: 3,
-    title: "Gaming UI designer",
-    company: "Rockstar Games",
+    title: "React Frontend developer",
+    company: "Magara",
     logo: "/jobs/3.png",
     location: "Cairo, Egypt",
-    postedTime: "month ago",
+    postedTime: "10 days ago",
     experience: "5 - 7y of exp",
     type: "Freelance",
     workMode: "Remote",
@@ -91,34 +92,39 @@ const jobs = [
 
 export function MainContent() {
   const [sorting, setSorting] = useState("top-match");
-  const [currentPage, setCurrentPage] = useState(1);
-  const jobsPerPage = 6;
-  const totalPages = Math.ceil(jobs.length / jobsPerPage);
-
-  const indexOfLastJob = currentPage * jobsPerPage;
-  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
-  const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob);
-
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
+  const [currentPage, setCurrentPage] = useState(2);
+  const totalPages = 3;
 
   return (
-    <div className="p-4 md:p-6 space-y-6 max-w-[1400px] mx-auto">
-      {/* Banner */}
-      <div className="bg-green-500 text-white p-4 flex justify-between items-center rounded-t-lg">
-        <div>
-          <h1 className="text-xl font-bold">UI Designer in Egypt</h1>
-          <p className="text-sm">70 job positions</p>
-        </div>
+    <div className="flex flex-col min-h-screen bg-gray-50 md:p-6">
+      {/* Header for Mobile */}
+      <div className="flex items-center justify-between p-4 bg-white md:hidden">
         <div className="flex items-center gap-2">
-          <span>Set alert:</span>
-          <Switch id="alert" />
+          <Image
+            src="/avatar.png"
+            alt="Profile"
+            width={40}
+            height={40}
+            className="rounded-full"
+          />
+          <span className="text-xl font-bold">
+            i<span className="text-green-500">ZAM</span>
+          </span>
         </div>
       </div>
 
-      {/* Sorting and Filters */}
-      <div className="flex justify-end mb-4">
+      {/* Banner */}
+      <div className="bg-green-600 p-4 flex justify-between items-center">
+        <div className="text-white">
+          <h1 className="text-lg font-semibold">UI Designer in Egypt</h1>
+          <p className="text-sm">70 job positions</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Switch id="alert" className="data-[state=checked]:bg-white" />
+        </div>
+      </div>
+{/* Sorting and Filters */}
+<div className="flex justify-end mb-4">
         <Select value={sorting} onValueChange={setSorting}>
           <SelectTrigger className="w-[180px]">
             <SelectValue />
@@ -131,96 +137,84 @@ export function MainContent() {
           </SelectContent>
         </Select>
       </div>
-
       {/* Job Listings */}
-      <div className="space-y-4">
-        {currentJobs.map((job) => (
-          <div key={job.id} className="bg-white p-4 rounded-lg shadow-md">
-            {/* Logo and Title */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
+      <div className="flex-1 space-y-4 p-4">
+        {jobs.map((job) => (
+          <div key={job.id} className="bg-white rounded-lg p-4 shadow-sm">
+            <div className="flex justify-between items-start">
+              <div className="flex gap-3">
                 <Image
                   src={job.logo}
                   alt={job.company}
-                  width={70}
-                  height={70}
-                  className="rounded object-cover"
+                  width={48}
+                  height={48}
+                  className="rounded"
                 />
                 <div>
-                <h3 className="font-dm-sans font-medium text-[25px] leading-[150%] text-[#161616] flex items-center">
-  {job.title}
-</h3>
-                  <p className="font-dm-sans font-bold text-[17px] leading-[24px] text-[#14A077] flex items-center">
-  {job.company}
-</p>
+                  <h3 className="font-medium text-base">{job.title}</h3>
+                  <p className="text-green-600 text-sm font-medium">{job.company}</p>
+                  <div className="flex items-center gap-2 text-gray-500 text-sm mt-1">
+                    <span>{job.location}</span>
+                    <span>•</span>
+                    <span>{job.postedTime}</span>
+                  </div>
                 </div>
               </div>
-              <button className="text-gray-400 hover:text-red-500 focus:outline-none">
-                <i className="fas fa-heart"></i>
-              </button>
+              <Button variant="ghost" size="icon" className="text-gray-400">
+                <Heart className="h-5 w-5" />
+              </Button>
             </div>
 
-            <div className="mt-2 text-sm text-gray-600 flex items-center">
-  <Image src="/4.png" alt="Location Icon" width={16} height={16} className="w-4 h-4 mr-1" />
-  <span>{job.location}</span>
-  <span className="mx-2">•</span>
-  <i className="fas fa-calendar-alt mr-1"></i>
-  <span>{job.postedTime}</span>
-</div>
-
-
-            {/* Experience, Type, Work Mode */}
-            <div className="mt-2 flex gap-2">
-              <Badge variant="secondary">{job.experience}</Badge>
-              <Badge variant="secondary">{job.type}</Badge>
-              <Badge variant="secondary">{job.workMode}</Badge>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <Badge variant="secondary" className="bg-gray-100 text-gray-600">
+                {job.experience}
+              </Badge>
+              <Badge variant="secondary" className="bg-gray-100 text-gray-600">
+                {job.type}
+              </Badge>
+              <Badge variant="secondary" className="bg-gray-100 text-gray-600">
+                {job.workMode}
+              </Badge>
             </div>
 
-            {/* Divider */}
-            <hr className="my-4 border-gray-200" />
-
-            {/* Categories */}
-            <div className="text-sm text-gray-600">
-              <p>
-                {job.category}
-              </p>
+            <div className="mt-3 text-sm text-gray-500">
+              {job.category}
             </div>
           </div>
         ))}
       </div>
 
       {/* Pagination */}
-      <button
-    onClick={() => handlePageChange(currentPage - 1)}
-    disabled={currentPage === 1}
-    className="px-3 py-1 mx-1 rounded border border-gray-300 bg-white disabled:opacity-50"
-  >
-    &lt;
-  </button>
-
-  {/* Page Numbers */}
-  {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (
-    <button
-      key={pageNumber}
-      onClick={() => handlePageChange(pageNumber)}
-      className={`px-3 py-1 mx-1 rounded border border-gray-300 ${
-        pageNumber === currentPage ? "bg-green-500 text-white" : "bg-white text-gray-800"
-      }`}
-    >
-      {pageNumber}
-    </button>
-  ))}
-
-  {/* Next Button */}
-  <button
-    onClick={() => handlePageChange(currentPage + 1)}
-    disabled={currentPage === totalPages}
-    className="px-3 py-1 mx-1 rounded border border-gray-300 bg-white disabled:opacity-50"
-  >
-    &gt;
-  </button>
-        
+      <div className="flex justify-center gap-2 p-4 bg-white">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+          className="h-8 w-8"
+        >
+          &lt;
+        </Button>
+        {[1, 2, 3].map((page) => (
+          <Button
+            key={page}
+            variant={currentPage === page ? "default" : "outline"}
+            className={`h-8 w-8 ${
+              currentPage === page ? "bg-green-600" : ""
+            }`}
+            onClick={() => setCurrentPage(page)}
+          >
+            {page}
+          </Button>
+        ))}
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+          className="h-8 w-8"
+        >
+          &gt;
+        </Button>
       </div>
-    
+    </div>
   );
 }

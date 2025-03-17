@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Home as HomeIcon, Briefcase, Users } from "lucide-react";
+import { Home as HomeIcon, Briefcase, Users, ChevronDown } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,22 +39,20 @@ export function TopNav({ onMenuClick }: TopNavProps) {
           </div>
 
            {/* Search Bar */}
-      <div className="flex-grow">
-        <Input
-          type="search"
-          placeholder="Search by name, job title..."
-          className="w-full bg-white/10 border-0 text-white placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-full px-4 py-2 pl-10"
-        />
-        <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
-          <Image
-            src="/1.png" // Replace with the actual path to your search icon
-            alt="Search Icon"
-            width={20}
-            height={20}
-            className="pointer-events-none"
-          />
-        </div>
-          </div>
+           <div className="relative flex-grow">
+  <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+    <div className="flex items-center justify-center w-8 h-8 bg-green-500 rounded-full text-white">
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+    </div>
+  </div>
+  <Input
+    type="search"
+    placeholder="Search by name, job title..."
+    className="w-full bg-white border-0 text-gray-600 placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-full px-4 py-2 pl-12"
+  />
+</div>
 
           {/* Navigation Items */}
           <nav className="flex items-center gap-6">
@@ -79,50 +77,64 @@ export function TopNav({ onMenuClick }: TopNavProps) {
         </nav>
 
           {/* Right Side Icons */}
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="text-white hover:text-white hover:bg-white/10">
-              <Bell className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" className="text-white hover:text-white hover:bg-white/10">
-              <MessageSquare className="h-5 w-5" />
-            </Button>
-            
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-white hover:text-white hover:bg-white/10">
-                  <User className="h-5 w-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>
-                  <div className="flex flex-col gap-1">
-                    <span className="font-medium">Mina Adel</span>
-                    <span className="text-sm text-muted-foreground">UX UI Designer</span>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Settings className="mr-2 h-4 w-4" />
-                  <span>Settings and Privacy</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Languages className="mr-2 h-4 w-4" />
-                  <span>Language</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <HelpCircle className="mr-2 h-4 w-4" />
-                  <span>Help</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-destructive">
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Logout</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
+          <div className="flex items-center gap-4">
+  {/* Notifications */}
+  <div className="flex flex-col items-center">
+    <Button variant="ghost" size="icon" className="text-white hover:text-white hover:bg-white/10">
+      <Bell className="h-5 w-5" />
+    </Button>
+    <span className="text-sm text-white">Notifications</span>
+  </div>
+
+  {/* Messaging */}
+  <div className="relative flex flex-col items-center">
+    <Button variant="ghost" size="icon" className="text-white hover:text-white hover:bg-white/10 relative">
+      <MessageSquare className="h-5 w-5" />
+      <span className="absolute top-0 right-0 -mt-1 -mr-1 bg-red-600 text-white text-xs rounded-full px-1 py-0.5">1</span>
+    </Button>
+    <span className="text-sm text-white">Messaging</span>
+  </div>
+
+  {/* Profile */}
+  <DropdownMenu>
+    <DropdownMenuTrigger asChild>
+      <div className="flex items-center gap-2">
+        <Button variant="ghost" size="icon" className="text-white hover:text-white hover:bg-white/10">
+          <Image src="/1.jpg" alt="Profile Picture" width={32} height={32} className="h-8 w-8 rounded-full" />
+        </Button>
+        <ChevronDown className="h-4 w-4 text-white" />
       </div>
-    </div>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent align="end" className="w-56">
+      <DropdownMenuLabel>
+        <div className="flex flex-col gap-1">
+          <span className="font-medium">Mina Adel</span>
+          <span className="text-sm text-muted-foreground">UX UI Designer</span>
+        </div>
+      </DropdownMenuLabel>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem>
+        <Settings className="mr-2 h-4 w-4" />
+        <span>Settings and Privacy</span>
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        <Languages className="mr-2 h-4 w-4" />
+        <span>Language</span>
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        <HelpCircle className="mr-2 h-4 w-4" />
+        <span>Help</span>
+      </DropdownMenuItem>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem className="text-destructive">
+        <LogOut className="mr-2 h-4 w-4" />
+        <span>Logout</span>
+      </DropdownMenuItem>
+    </DropdownMenuContent>
+  </DropdownMenu>
+</div>
+</div>
+</div>
+</div>
   );
 }

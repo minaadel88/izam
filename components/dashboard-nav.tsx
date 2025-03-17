@@ -4,10 +4,6 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
-import { 
-  Settings, Home, Briefcase, Users, Award, Info, Phone, GripVertical,
-  Eye, EyeOff, Save, X
-} from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DndContext,
@@ -28,6 +24,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { fetchNavigation, updateNavigation, trackNavChange } from "@/lib/api";
 import { toast } from "sonner";
+import Image from "next/image";
 
 interface NavItem {
   id: string;
@@ -52,22 +49,28 @@ function SortableItem({ item, isEditMode, onVisibilityToggle, onLabelChange }: S
     transition,
   } = useSortable({ id: item.id });
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
   const [isEditing, setIsEditing] = useState(false);
   const [label, setLabel] = useState(item.label);
 
+  const style = transform ? {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  } : undefined;
+
+  useEffect(() => {
+    setLabel(item.label);
+  }, [item.label]);
+
   const handleDoubleClick = () => {
-    if (isEditMode) {
+    if (isEditMode && !isEditing) {
       setIsEditing(true);
     }
   };
 
   const handleLabelSave = () => {
-    onLabelChange(item.id, label);
+    if (label !== item.label) {
+      onLabelChange(item.id, label);
+    }
     setIsEditing(false);
   };
 
@@ -77,63 +80,54 @@ function SortableItem({ item, isEditMode, onVisibilityToggle, onLabelChange }: S
       style={style}
       {...attributes}
       className={cn(
-        "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-colors",
-        "hover:bg-accent hover:text-accent-foreground",
+        "flex items-center gap-3 px-4 py-3 transition-colors",
+        "hover:bg-gray-100",
+        !item.visible && "opacity-50",
         "cursor-pointer"
       )}
       onDoubleClick={handleDoubleClick}
     >
       {isEditMode && (
-        <button {...listeners} className="cursor-grab">
-          <GripVertical className="h-4 w-4" />
-        </button>
+        <div {...listeners} className="cursor-grab">
+          <span className="text-gray-400">⋮⋮</span>
+        </div>
       )}
       
-      {getIcon(item.icon)}
-
       {isEditing ? (
         <div className="flex-1 flex gap-2">
           <Input
             value={label}
             onChange={(e) => setLabel(e.target.value)}
-            className="h-7 py-1"
+            className="h-8 py-1"
             autoFocus
             onBlur={handleLabelSave}
             onKeyDown={(e) => e.key === 'Enter' && handleLabelSave()}
           />
         </div>
       ) : (
-        <span className={cn(!item.visible && "opacity-50")}>{item.label}</span>
+        <div className="flex-1 flex items-center gap-2">
+          <span className="text-[15px]">{item.label}</span>
+        </div>
       )}
 
       {isEditMode && !isEditing && (
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-7 w-7"
-          onClick={() => onVisibilityToggle(item.id)}
-        >
-          {item.visible ? (
-            <Eye className="h-4 w-4" />
-          ) : (
-            <EyeOff className="h-4 w-4" />
-          )}
-        </Button>
+        <div className="flex gap-2">
+          <button 
+            onClick={() => setIsEditing(true)}
+            className="text-gray-400 hover:text-gray-600"
+          >
+            <span>✎</span>
+          </button>
+          <button 
+            onClick={() => onVisibilityToggle(item.id)}
+            className="text-gray-400 hover:text-gray-600"
+          >
+            {item.visible ? '👁️' : '👁️‍🗨️'}
+          </button>
+        </div>
       )}
     </div>
   );
-}
-
-function getIcon(name: string) {
-  const icons: { [key: string]: React.ReactNode } = {
-    home: <Home className="h-4 w-4" />,
-    briefcase: <Briefcase className="h-4 w-4" />,
-    user: <Users className="h-4 w-4" />,
-    award: <Award className="h-4 w-4" />,
-    info: <Info className="h-4 w-4" />,
-    phone: <Phone className="h-4 w-4" />,
-  };
-  return icons[name] || <Info className="h-4 w-4" />;
 }
 
 interface DashboardNavProps {
@@ -220,7 +214,7 @@ export function DashboardNav({ isOpen, setIsOpen, isEditMode, setIsEditMode }: D
       {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
@@ -228,32 +222,47 @@ export function DashboardNav({ isOpen, setIsOpen, isEditMode, setIsEditMode }: D
       {/* Sidebar */}
       <div
         className={cn(
-          "fixed lg:static inset-y-0 left-0 z-50 flex w-72 flex-col bg-card shadow-lg transform transition-transform duration-300 ease-in-out lg:transform-none",
-          isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+          "fixed lg:static inset-y-0 right-0 z-50 w-64 bg-white transform transition-transform duration-300 ease-in-out lg:transform-none shadow-lg",
+          isOpen ? "translate-x-0" : "translate-x-full lg:translate-x-0"
         )}
       >
         <div className="p-4 flex justify-between items-center border-b">
-          <h2 className="text-lg font-semibold">Menu</h2>
+          <h2 className="text-lg font-medium">Menu</h2>
           <div className="flex gap-2">
             {isEditMode ? (
               <>
-                     <Button variant="ghost" size="icon" onClick={handleCancel}>
-        <img src="/1.png" alt="Cancel" className="h-4 w-4" />
-      </Button>
-      <Button variant="ghost" size="icon" onClick={handleSave}>
-        <img src="/0.png" alt="Save" className="h-4 w-4" />
-      </Button>
-    </>
-  ) : (
-    <Button variant="ghost" size="icon" onClick={() => setIsEditMode(true)}>
-      <img src="/10.png" alt="Edit" className="h-4 w-4" />
-    </Button>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={handleCancel}
+                  className="text-red-500 hover:text-red-600"
+                >
+                  ✕
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={handleSave}
+                  className="text-green-500 hover:text-green-600"
+                >
+                  ✓
+                </Button>
+              </>
+            ) : (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => setIsEditMode(true)}
+                className="text-gray-500 hover:text-gray-600"
+              >
+                ⚙️
+              </Button>
             )}
           </div>
         </div>
 
-        <ScrollArea className="flex-1">
-          <div className="p-2 space-y-1">
+        <ScrollArea className="h-[calc(100vh-65px)]">
+          <div className="py-2">
             <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}
