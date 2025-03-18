@@ -21,17 +21,10 @@ interface TopNavProps {
 
 export function TopNav({ onMenuClick }: TopNavProps) {
   return (
-    <div className="border-b bg-black">
+    <div className="border-b bg-black  p-2">
       <div className="flex h-14 items-center px-4 gap-4 max-w-[1400px] mx-auto">
         {/* Hamburger Menu for Mobile */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="lg:hidden text-white"
-          onClick={onMenuClick}
-        >
-          <Menu className="h-6 w-6" />
-        </Button>
+        
 
         {/* Logo */}
         <div className="flex items-center">
@@ -69,10 +62,10 @@ export function TopNav({ onMenuClick }: TopNavProps) {
         </div>
 
         {/* Navigation Items (Hidden on Mobile) */}
-        <nav className="hidden lg:flex items-center gap-6 flex-1 justify-center">
-          <Button variant="ghost" className="text-white hover:text-white hover:bg-white/10">
+        <nav className="hidden lg:flex items-center gap-6 flex-1 justify-center p-3">
+          <Button variant="ghost" className="text-white hover:text-white hover:bg-white/10 ">
             <div className="flex flex-col items-center">
-              <HomeIcon className="h-6 w-6 mb-2" />
+              <HomeIcon className="h-6 w-6 mb-2 " />
               <span>Home</span>
             </div>
           </Button>
@@ -94,7 +87,7 @@ export function TopNav({ onMenuClick }: TopNavProps) {
         <div className="flex items-center gap-4">
           {/* Notifications */}
           <div className="flex flex-col items-center">
-            <Button variant="ghost" size="icon" className="text-white hover:text-white hover:bg-white/10">
+            <Button variant="ghost" size="icon" className="text-white hover:text-white hover:bg-white/10 p-2">
               <Bell className="h-5 w-5" />
             </Button>
             <span className="text-xs text-white lg:block hidden">Notifications</span>
@@ -114,7 +107,7 @@ export function TopNav({ onMenuClick }: TopNavProps) {
             <DropdownMenuTrigger asChild>
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="icon" className="text-white hover:text-white hover:bg-white/10">
-                  <Image src="/1.jpg" alt="Profile Picture" width={32} height={32} className="h-8 w-2 rounded-full" />
+                  <Image src="/1.jpg" alt="Profile Picture" width={132} height={132} className="h-8 w-8 rounded-full" />
                 </Button>
                 <ChevronDown className="h-4 w-4 text-white lg:block hidden" />
               </div>
