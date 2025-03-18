@@ -97,21 +97,10 @@ export function MainContent() {
   const totalPages = 3;
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 md:p-6">
-      {/* Header for Mobile */}
-      <div className="flex items-center justify-between p-4 bg-white md:hidden">
-        <div className="flex items-center gap-2">
-          <Image
-            src="/avatar.png"
-            alt="Profile"
-            width={40}
-            height={40}
-            className="rounded-full"
-          />
-          <span className="text-xl font-bold">
-            i<span className="text-green-500">ZAM</span>
-          </span>
-        </div>
+    <div >
+     
+      <div className=" p-1">
+        
       </div>
 
       {/* Banner */}
@@ -122,7 +111,10 @@ export function MainContent() {
         </div>
         <div className="flex items-center gap-2">
           <Switch id="alert" className="data-[state=checked]:bg-white" />
+          
         </div>
+
+        
       </div>
 
       {/* Sorting and Filters */}
