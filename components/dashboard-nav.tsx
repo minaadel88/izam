@@ -287,17 +287,17 @@ export function DashboardNav({ isOpen, setIsOpen, isEditMode, setIsEditMode }: D
         </ScrollArea>
       </div>
 
-      {/* Mobile Menu Button */}
-      <div className="absolute top-60 right-4">
-    <Button
-      variant="outline"
-      size="icon"
-      onClick={() => setIsOpen(!isOpen)}
-      className="bg-white text-gray-500 hover:text-gray-600 shadow-md"
-    >
-      ☰
-    </Button>
-</div>
+     {/* Mobile Menu Button (Visible only on small screens) */}
+     <div className="absolute top-16 right-4 md:hidden">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => setIsOpen(!isOpen)}
+          className="bg-white text-gray-500 hover:text-gray-600 shadow-md"
+        >
+          ☰
+        </Button>
+      </div>
      
      
     </>
